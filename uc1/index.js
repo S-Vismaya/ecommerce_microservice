@@ -1,7 +1,6 @@
-const express = require('express');
-const cors = require('cors');
-const mongoose = require('mongoose');
-require('dotenv').config();
+const express = require("express");
+const cors = require("cors");
+const mongoose = require("mongoose");
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -22,24 +21,24 @@ const UserSchema = new schema({
     required: true,
   },
 });
-const loginmodel = mongoose.model('Users', UserSchema);
-app.get('/', (req, res) => {
-  res.json({ message: 'HEllo from uc1' });
+const loginmodel = mongoose.model("Users", UserSchema);
+app.get("/", (req, res) => {
+  res.json({ message: "HEllo from uc1" });
 });
-app.post('/login', async (req, res) => {
+app.post("/login", async (req, res) => {
   const { email, password } = req.body;
   try {
     const data = await loginmodel.findOne({ email });
     if (!data) {
-      throw Error('Email not registered');
+      throw Error("Email not registered");
     } else if (data.password != password) {
-      throw Error('incorrect password');
+      throw Error("incorrect password");
     } else res.status(200).json(data.email);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 });
-app.post('/signup', async (req, res) => {
+app.post("/signup", async (req, res) => {
   const { email, password } = req.body;
   console.log(req.body);
   try {
@@ -51,10 +50,10 @@ app.post('/signup', async (req, res) => {
 });
 mongoose
   .connect(
-    'mongodb+srv://svismaya20:0biRPGTLo4W1Lgbq@cluster0.xlhno4f.mongodb.net/'
+    "mongodb+srv://arunkurali9:jzSQBwQVXqJPw5lg@cluster0.f8envjp.mongodb.net/"
   ) //connect to database , then create middleware server
   .then(() => {
-    app.listen(5001, () => console.log('uc1 running'));
+    app.listen(5001, () => console.log("uc1 running"));
   })
   .catch((error) => {
     console.log(error);

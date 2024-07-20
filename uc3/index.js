@@ -1,7 +1,6 @@
-const express = require('express');
-const mongoose = require('mongoose');
-require('dotenv').config();
-const cors = require('cors');
+const express = require("express");
+const mongoose = require("mongoose");
+const cors = require("cors");
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -42,14 +41,14 @@ const historyschema = new schema({
     default: [],
   },
 });
-const singleprod = mongoose.model('singleprod', prodschema);
-const userhistory = mongoose.model('userhistory', historyschema);
-const listofprods = mongoose.model('listofprods', cartschema);
+const singleprod = mongoose.model("singleprod", prodschema);
+const userhistory = mongoose.model("userhistory", historyschema);
+const listofprods = mongoose.model("listofprods", cartschema);
 
-app.get('/', (req, res) => {
-  res.json({ message: 'Hello from uc3' });
+app.get("/", (req, res) => {
+  res.json({ message: "Hello from uc3" });
 });
-app.post('/addcart', async (req, res) => {
+app.post("/addcart", async (req, res) => {
   const { user, id, quan } = req.body;
   const temp = new singleprod();
   temp.product = id;
@@ -71,9 +70,9 @@ app.post('/addcart', async (req, res) => {
       res.status(400).json({ error: error.message });
     }
   }
-  console.log('added product to cart');
+  console.log("added product to cart");
 });
-app.post('/delcart', async (req, res) => {
+app.post("/delcart", async (req, res) => {
   const { user, id } = req.body;
   const uresult = await userhistory.findOneAndUpdate(
     { user: user },
@@ -81,7 +80,7 @@ app.post('/delcart', async (req, res) => {
   );
   res.status(200).json(uresult);
 });
-app.post('/buy', async (req, res) => {
+app.post("/buy", async (req, res) => {
   const { user, ctotal } = req.body;
   const uresult = await userhistory.find({ user: user });
   var temp = new listofprods();
@@ -93,24 +92,24 @@ app.post('/buy', async (req, res) => {
     { curr_cart: [], $push: { cart_history: temp } }
   );
   res.status(200).json(nresult);
-  console.log('shifted items from current cart to cart history');
+  console.log("shifted items from current cart to cart history");
 });
-app.get('/getcart/:user', async (req, res) => {
+app.get("/getcart/:user", async (req, res) => {
   const user = req.params.user;
   const uresult = await userhistory.findOne({ user: user });
   res.status(200).json(uresult.curr_cart);
 });
-app.get('/history/:user', async (req, res) => {
+app.get("/history/:user", async (req, res) => {
   const user = req.params.user;
   const uresult = await userhistory.findOne({ user: user });
   res.status(200).json(uresult.cart_history);
 });
 mongoose
   .connect(
-    'mongodb+srv://svismaya20:0biRPGTLo4W1Lgbq@cluster0.xlhno4f.mongodb.net/'
+    "mongodb+srv://arunkurali9:jzSQBwQVXqJPw5lg@cluster0.f8envjp.mongodb.net/"
   ) //connect to database , then create middleware server
   .then(() => {
-    app.listen(5003, () => console.log('uc3 running'));
+    app.listen(5003, () => console.log("uc3 running"));
   })
   .catch((error) => {
     console.log(error);
